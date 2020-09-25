@@ -10,12 +10,13 @@
       <div class="detail-container">
         <el-row>
           <Warning />
-          <el-col :span="24">
+          <el-col v-loading="globalLoading" :span="24">
             <ebook-upload
               :file-list="fileList"
               :disabled="isEdit"
               @onSuccess="onUploadSuccess"
               @onRemove="onUploadRemove"
+              @beforeUpload="beforeUpload"
             />
           </el-col>
           <el-col :span="24">
@@ -183,12 +184,16 @@ export default {
         author: [{ validator: validateRequire }],
         language: [{ validator: validateRequire }],
         publisher: [{ validator: validateRequire }]
-      }
+      },
+      globalLoading: false
     }
   },
   methods: {
     showGuide() {
       console.log('jjdjdjdj')
+    },
+    beforeUpload() {
+      this.globalLoading = true
     },
     submitForm() {
       this.loading = true
@@ -200,6 +205,7 @@ export default {
       console.log('onUploadSuccess', data)
       // this.setData(data)
       this.setData(data)
+      this.globalLoading = false
     },
     onUploadRemove() {
       this.setDefault()
