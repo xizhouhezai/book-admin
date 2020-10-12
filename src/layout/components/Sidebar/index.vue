@@ -49,6 +49,9 @@ export default {
     isCollapse() {
       return !this.sidebar.opened
     }
+  },
+  mounted() {
+    console.log('permission_routes=======>', this.permission_routes)
   }
 }
 </script>

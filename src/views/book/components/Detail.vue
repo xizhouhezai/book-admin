@@ -150,6 +150,8 @@ import Warning from './Warning'
 import EbookUpload from '../../../components/EbookUpload'
 import MDinput from '../../../components/MDinput'
 
+import { createBook } from '../../../api/book'
+
 const fields = {
   title: '书名',
   author: '作者',
@@ -196,10 +198,40 @@ export default {
       this.globalLoading = true
     },
     submitForm() {
-      this.loading = true
-      setTimeout(() => {
+      const onSuccess = (response) => {
+        console.log('res=======>', response)
+        const { msg } = response
+        this.$notify({
+          title: '操作成功',
+          message: msg,
+          type: 'success',
+          duration: 2000
+        })
         this.loading = false
-      }, 1000)
+      }
+
+      if (!this.loading) {
+        this.loading = true
+        this.$refs.postForm.validate((valid, fields) => {
+          if (valid) {
+            const book = Object.assign({}, this.postForm)
+            delete book.contentsTree
+
+            if (!this.isEdit) {
+              createBook(book).then(response => {
+                onSuccess(response)
+                this.setDefault()
+              }).catch(() => {
+                this.loading = false
+              })
+            }
+          }
+        })
+      }
+      // this.loading = true
+      // setTimeout(() => {
+      //   this.loading = false
+      // }, 1000)
     },
     onUploadSuccess(data) {
       console.log('onUploadSuccess', data)

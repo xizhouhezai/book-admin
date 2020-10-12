@@ -128,7 +128,7 @@ export const asyncRoutes = [
         name: 'videoList',
         path: '/video/list',
         component: () => import('@/views/video/list'),
-        meta: { title: '视频列表', icon: 'list', roles: ['admin'] }
+        meta: { title: '视频列表', icon: 'list', roles: ['editor'] }
       }
     ]
   },
